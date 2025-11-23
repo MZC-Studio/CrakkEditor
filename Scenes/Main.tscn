@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dmx7bdk70hv4e" path="res://Scripts/EditorMain.cs" id="1_idj7w"]
 [ext_resource type="Theme" uid="uid://jo6gso32sfyr" path="res://Assets/Themes/theme.tres" id="1_r150o"]
 
-[node name="FPS" type="Control" node_paths=PackedStringArray("bpmEdit", "beatNumEdit", "trackEdit", "holdTimeEdit", "noteBPMEdit", "xPosEdit", "yPosEdit", "playButton", "pauseButton", "saveButton", "loadChartButton", "loadMusicButton", "reloadButton", "switchButtons", "nameLabel", "timeLabel", "currentTypeLabel", "FPSLabel", "timeSlider")]
+[node name="FPS" type="Control" node_paths=PackedStringArray("bpmEdit", "beatNumEdit", "trackEdit", "holdTimeEdit", "noteBPMEdit", "xPosEdit", "yPosEdit", "playButton", "pauseButton", "saveButton", "loadChartButton", "loadMusicButton", "previewButton", "reloadButton", "switchButtons", "nameLabel", "timeLabel", "currentTypeLabel", "FPSLabel", "timeSlider", "tipMask", "player")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,6 +23,7 @@ pauseButton = NodePath("DataPanel/SongsControl/Pause")
 saveButton = NodePath("DataPanel/ControlArea/Container/SaveChartButton")
 loadChartButton = NodePath("DataPanel/ControlArea/Container/LoadChartButton")
 loadMusicButton = NodePath("DataPanel/ControlArea/Container/LoadMusicButton")
+previewButton = NodePath("DataPanel/ControlArea/Container/PreviewButton")
 reloadButton = NodePath("DataPanel/ControlArea/Container/ReloadButton")
 switchButtons = [NodePath("DataPanel/NoteControl/NoteSelect/HFlowContainer/Button"), NodePath("DataPanel/NoteControl/NoteSelect/HFlowContainer/Button2"), NodePath("DataPanel/NoteControl/NoteSelect/HFlowContainer/Button3"), NodePath("DataPanel/NoteControl/NoteSelect/HFlowContainer/Button4"), NodePath("DataPanel/NoteControl/NoteSelect/HFlowContainer/Button5")]
 nameLabel = NodePath("DataPanel/SongsControl/FileName")
@@ -30,6 +31,8 @@ timeLabel = NodePath("DataPanel/SongsControl/Time")
 currentTypeLabel = NodePath("DataPanel/NoteControl/CurrentSelect")
 FPSLabel = NodePath("DataPanel/ControlArea/Container/FPS")
 timeSlider = NodePath("DataPanel/SongsControl/TimeSlider")
+tipMask = NodePath("DataPanel/Mask")
+player = NodePath("AudioStreamPlayer")
 
 [node name="DataPanel" type="Panel" parent="."]
 layout_mode = 1
@@ -116,11 +119,6 @@ theme = ExtResource("1_r150o")
 text = "节奏数"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="BPMListButton" type="Button" parent="DataPanel/BasicData/Container"]
-layout_mode = 2
-theme = ExtResource("1_r150o")
-text = "  BPM列表  "
 
 [node name="Separator" type="VSeparator" parent="DataPanel"]
 layout_mode = 1
@@ -458,9 +456,9 @@ anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 1972.0
-offset_top = -112.0
+offset_top = -113.5
 offset_right = 2428.0
-offset_bottom = 110.0
+offset_bottom = 111.5
 grow_vertical = 2
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 25
@@ -502,3 +500,111 @@ text = "     重载     "
 layout_mode = 2
 theme = ExtResource("1_r150o")
 text = "FPS  100"
+
+[node name="Mask" type="ColorRect" parent="DataPanel"]
+visible = false
+layout_mode = 0
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 1966.0
+offset_bottom = 248.0
+color = Color(0, 0, 0, 0.8666667)
+
+[node name="Label" type="Label" parent="DataPanel/Mask"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -120.0
+offset_top = -18.5
+offset_right = 120.0
+offset_bottom = 18.5
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_r150o")
+text = "！请先加载音频文件 ！"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="NotePanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1166.0
+offset_top = -466.0
+offset_right = 131.0
+offset_bottom = 726.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CameraEventPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 264.0
+offset_top = -466.0
+offset_right = 1170.0
+offset_bottom = 726.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="CameraEventPanel"]
+layout_mode = 1
+offset_left = 27.0
+offset_top = 9.0
+offset_right = 866.0
+offset_bottom = 81.0
+theme = ExtResource("1_r150o")
+theme_override_font_sizes/font_size = 45
+text = "摄像机事件编辑"
+vertical_alignment = 1
+
+[node name="CameraMoveEvent" type="ColorRect" parent="CameraEventPanel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -372.0
+offset_top = -325.0
+offset_right = -239.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.6745098, 0.9490196, 1, 0.78431374)
+
+[node name="CameraRotateEvent" type="ColorRect" parent="CameraEventPanel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -66.5
+offset_top = -325.0
+offset_right = 66.5
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(1, 0.9019608, 0.627451, 0.78431374)
+
+[node name="CameraBrightnessEvent" type="ColorRect" parent="CameraEventPanel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 237.0
+offset_top = -325.0
+offset_right = 370.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(1, 0.7137255, 0.5372549, 0.78431374)
