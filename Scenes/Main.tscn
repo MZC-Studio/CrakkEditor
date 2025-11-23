@@ -1,0 +1,504 @@
+[gd_scene load_steps=3 format=3 uid="uid://cohc83cl8wnij"]
+
+[ext_resource type="Script" uid="uid://dmx7bdk70hv4e" path="res://Scripts/EditorMain.cs" id="1_idj7w"]
+[ext_resource type="Theme" uid="uid://jo6gso32sfyr" path="res://Assets/Themes/theme.tres" id="1_r150o"]
+
+[node name="FPS" type="Control" node_paths=PackedStringArray("bpmEdit", "beatNumEdit", "trackEdit", "holdTimeEdit", "noteBPMEdit", "xPosEdit", "yPosEdit", "playButton", "pauseButton", "saveButton", "loadChartButton", "loadMusicButton", "reloadButton", "switchButtons", "nameLabel", "timeLabel", "currentTypeLabel", "FPSLabel", "timeSlider")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_idj7w")
+bpmEdit = NodePath("DataPanel/BasicData/Container/BPMEdit")
+beatNumEdit = NodePath("DataPanel/BasicData/Container/BeatNumEdit")
+trackEdit = NodePath("DataPanel/NoteControl/NoteData/Container/TrackEdit")
+holdTimeEdit = NodePath("DataPanel/NoteControl/NoteData/Container/HoldTimeEdit")
+noteBPMEdit = NodePath("DataPanel/NoteControl/NoteData/Container/BPMEdit")
+xPosEdit = NodePath("DataPanel/NoteControl/NoteData/Container/XPosEdit2")
+yPosEdit = NodePath("DataPanel/NoteControl/NoteData/Container/YPosEdit")
+playButton = NodePath("DataPanel/SongsControl/Play")
+pauseButton = NodePath("DataPanel/SongsControl/Pause")
+saveButton = NodePath("DataPanel/ControlArea/Container/SaveChartButton")
+loadChartButton = NodePath("DataPanel/ControlArea/Container/LoadChartButton")
+loadMusicButton = NodePath("DataPanel/ControlArea/Container/LoadMusicButton")
+reloadButton = NodePath("DataPanel/ControlArea/Container/ReloadButton")
+switchButtons = [NodePath("DataPanel/NoteControl/NoteSelect/HFlowContainer/Button"), NodePath("DataPanel/NoteControl/NoteSelect/HFlowContainer/Button2"), NodePath("DataPanel/NoteControl/NoteSelect/HFlowContainer/Button3"), NodePath("DataPanel/NoteControl/NoteSelect/HFlowContainer/Button4"), NodePath("DataPanel/NoteControl/NoteSelect/HFlowContainer/Button5")]
+nameLabel = NodePath("DataPanel/SongsControl/FileName")
+timeLabel = NodePath("DataPanel/SongsControl/Time")
+currentTypeLabel = NodePath("DataPanel/NoteControl/CurrentSelect")
+FPSLabel = NodePath("DataPanel/ControlArea/Container/FPS")
+timeSlider = NodePath("DataPanel/SongsControl/TimeSlider")
+
+[node name="DataPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 256.0
+grow_horizontal = 2
+
+[node name="BasicData" type="MarginContainer" parent="DataPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -111.0
+offset_right = 456.0
+offset_bottom = 111.0
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 25
+
+[node name="Container" type="HFlowContainer" parent="DataPanel/BasicData"]
+layout_mode = 2
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 50
+
+[node name="BPMEdit" type="LineEdit" parent="DataPanel/BasicData/Container"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "120"
+placeholder_text = "Base BPM"
+alignment = 1
+max_length = 8
+expand_to_text_length = true
+emoji_menu_enabled = false
+virtual_keyboard_type = 3
+select_all_on_focus = true
+
+[node name="Label" type="Label" parent="DataPanel/BasicData/Container/BPMEdit"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -23.5
+offset_top = 4.0
+offset_right = 16.5
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_r150o")
+text = "基础 BPM"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BeatNumEdit" type="LineEdit" parent="DataPanel/BasicData/Container"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "4"
+placeholder_text = "Beat Num"
+alignment = 1
+max_length = 5
+expand_to_text_length = true
+emoji_menu_enabled = false
+virtual_keyboard_type = 2
+select_all_on_focus = true
+
+[node name="Label" type="Label" parent="DataPanel/BasicData/Container/BeatNumEdit"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -23.5
+offset_top = 4.0
+offset_right = 16.5
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_r150o")
+text = "节奏数"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BPMListButton" type="Button" parent="DataPanel/BasicData/Container"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "  BPM列表  "
+
+[node name="Separator" type="VSeparator" parent="DataPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 447.0
+offset_top = -109.0
+offset_right = 464.0
+offset_bottom = 109.0
+grow_vertical = 2
+theme_override_constants/separation = 17
+
+[node name="SongsControl" type="Control" parent="DataPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 474.0
+offset_top = -117.0
+offset_right = 1063.04
+offset_bottom = 118.0
+grow_vertical = 2
+
+[node name="TimeSlider" type="HSlider" parent="DataPanel/SongsControl"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 157.0
+offset_right = 201.33337
+offset_bottom = 181.0
+scale = Vector2(3, 3)
+theme = ExtResource("1_r150o")
+scrollable = false
+
+[node name="FileName" type="Label" parent="DataPanel/SongsControl"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 34.0
+offset_right = 514.0
+offset_bottom = 83.0
+theme = ExtResource("1_r150o")
+theme_override_font_sizes/font_size = 40
+text = "SongfileName"
+
+[node name="Time" type="Label" parent="DataPanel/SongsControl"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 97.0
+offset_right = 514.0
+offset_bottom = 146.0
+theme = ExtResource("1_r150o")
+theme_override_font_sizes/font_size = 30
+text = "0:00/2:00"
+
+[node name="Play" type="Button" parent="DataPanel/SongsControl"]
+layout_mode = 0
+offset_left = 340.0
+offset_top = 39.0
+offset_right = 533.0
+offset_bottom = 86.0
+theme = ExtResource("1_r150o")
+text = "播放"
+
+[node name="Pause" type="Button" parent="DataPanel/SongsControl"]
+layout_mode = 0
+offset_left = 340.0
+offset_top = 107.0
+offset_right = 533.0
+offset_bottom = 154.0
+theme = ExtResource("1_r150o")
+text = "暂停
+"
+
+[node name="Separator2" type="VSeparator" parent="DataPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 1074.0
+offset_top = -109.0
+offset_right = 1091.0
+offset_bottom = 109.0
+grow_vertical = 2
+theme_override_constants/separation = 17
+
+[node name="NoteControl" type="Control" parent="DataPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 1116.0
+offset_top = -127.0
+offset_right = 1954.0
+offset_bottom = 127.0
+grow_vertical = 2
+
+[node name="NoteSelect" type="MarginContainer" parent="DataPanel/NoteControl"]
+layout_mode = 0
+offset_top = 16.0
+offset_right = 228.0
+offset_bottom = 191.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HFlowContainer" type="HFlowContainer" parent="DataPanel/NoteControl/NoteSelect"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 10
+metadata/_edit_use_anchors_ = true
+
+[node name="Button" type="Button" parent="DataPanel/NoteControl/NoteSelect/HFlowContainer"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "Tap"
+metadata/_edit_use_anchors_ = true
+
+[node name="Button2" type="Button" parent="DataPanel/NoteControl/NoteSelect/HFlowContainer"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "Hold"
+metadata/_edit_use_anchors_ = true
+
+[node name="Button3" type="Button" parent="DataPanel/NoteControl/NoteSelect/HFlowContainer"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "Flick"
+metadata/_edit_use_anchors_ = true
+
+[node name="Button4" type="Button" parent="DataPanel/NoteControl/NoteSelect/HFlowContainer"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "Click"
+metadata/_edit_use_anchors_ = true
+
+[node name="Button5" type="Button" parent="DataPanel/NoteControl/NoteSelect/HFlowContainer"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "Drag"
+metadata/_edit_use_anchors_ = true
+
+[node name="CurrentSelect" type="Label" parent="DataPanel/NoteControl"]
+layout_mode = 0
+offset_left = 9.0
+offset_top = 191.0
+offset_right = 147.0
+offset_bottom = 228.0
+theme = ExtResource("1_r150o")
+text = "目前：Tap"
+vertical_alignment = 1
+
+[node name="NoteData" type="MarginContainer" parent="DataPanel/NoteControl"]
+layout_mode = 0
+offset_left = 184.0
+offset_top = 5.0
+offset_right = 849.0
+offset_bottom = 243.0
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 25
+
+[node name="Container" type="HFlowContainer" parent="DataPanel/NoteControl/NoteData"]
+layout_mode = 2
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 50
+
+[node name="TrackEdit" type="LineEdit" parent="DataPanel/NoteControl/NoteData/Container"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "0"
+placeholder_text = "Track"
+alignment = 1
+max_length = 1
+expand_to_text_length = true
+emoji_menu_enabled = false
+virtual_keyboard_type = 2
+select_all_on_focus = true
+
+[node name="Label" type="Label" parent="DataPanel/NoteControl/NoteData/Container/TrackEdit"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -23.5
+offset_top = 4.0
+offset_right = 16.5
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_r150o")
+text = "轨道"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HoldTimeEdit" type="LineEdit" parent="DataPanel/NoteControl/NoteData/Container"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "10"
+placeholder_text = "Holdtime"
+alignment = 1
+max_length = 3
+expand_to_text_length = true
+emoji_menu_enabled = false
+virtual_keyboard_type = 3
+select_all_on_focus = true
+
+[node name="Label" type="Label" parent="DataPanel/NoteControl/NoteData/Container/HoldTimeEdit"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -23.5
+offset_top = 4.0
+offset_right = 16.5
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_r150o")
+text = "Hold长度（秒）"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BPMEdit" type="LineEdit" parent="DataPanel/NoteControl/NoteData/Container"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "120"
+placeholder_text = "BPM"
+alignment = 1
+max_length = 8
+expand_to_text_length = true
+emoji_menu_enabled = false
+virtual_keyboard_type = 3
+select_all_on_focus = true
+
+[node name="Label" type="Label" parent="DataPanel/NoteControl/NoteData/Container/BPMEdit"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -23.5
+offset_top = 4.0
+offset_right = 16.5
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_r150o")
+text = "BPM"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="XPosEdit2" type="LineEdit" parent="DataPanel/NoteControl/NoteData/Container"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "-5"
+placeholder_text = "X Pos"
+alignment = 1
+max_length = 5
+expand_to_text_length = true
+emoji_menu_enabled = false
+virtual_keyboard_type = 3
+select_all_on_focus = true
+
+[node name="Label" type="Label" parent="DataPanel/NoteControl/NoteData/Container/XPosEdit2"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -23.5
+offset_top = 4.0
+offset_right = 16.5
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_r150o")
+text = "X位置"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="YPosEdit" type="LineEdit" parent="DataPanel/NoteControl/NoteData/Container"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "5"
+placeholder_text = "Y Pos"
+alignment = 1
+max_length = 5
+expand_to_text_length = true
+emoji_menu_enabled = false
+virtual_keyboard_type = 3
+select_all_on_focus = true
+
+[node name="Label" type="Label" parent="DataPanel/NoteControl/NoteData/Container/YPosEdit"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -23.5
+offset_top = 4.0
+offset_right = 16.5
+offset_bottom = 46.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_r150o")
+text = "Y位置"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Separator3" type="VSeparator" parent="DataPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 1955.0
+offset_top = -109.0
+offset_right = 1972.0
+offset_bottom = 109.0
+grow_vertical = 2
+theme_override_constants/separation = 17
+
+[node name="ControlArea" type="MarginContainer" parent="DataPanel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 1972.0
+offset_top = -112.0
+offset_right = 2428.0
+offset_bottom = 110.0
+grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 25
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 25
+
+[node name="Container" type="HFlowContainer" parent="DataPanel/ControlArea"]
+layout_mode = 2
+theme_override_constants/h_separation = 50
+theme_override_constants/v_separation = 20
+
+[node name="SaveChartButton" type="Button" parent="DataPanel/ControlArea/Container"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "  保存谱面  "
+
+[node name="LoadChartButton" type="Button" parent="DataPanel/ControlArea/Container"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "  加载谱面  "
+
+[node name="LoadMusicButton" type="Button" parent="DataPanel/ControlArea/Container"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "  加载音乐  "
+
+[node name="PreviewButton" type="Button" parent="DataPanel/ControlArea/Container"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "  预览谱面  "
+
+[node name="ReloadButton" type="Button" parent="DataPanel/ControlArea/Container"]
+modulate = Color(1, 0.3158576, 0.3158576, 1)
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "     重载     "
+
+[node name="FPS" type="Label" parent="DataPanel/ControlArea/Container"]
+layout_mode = 2
+theme = ExtResource("1_r150o")
+text = "FPS  100"

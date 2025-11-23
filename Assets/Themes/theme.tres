@@ -1,0 +1,13 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://jo6gso32sfyr"]
+
+[ext_resource type="FontFile" uid="uid://c0urbn30seb7n" path="res://Assets/Fonts/Gamefont.ttf" id="1_5xvpe"]
+
+[resource]
+Button/font_sizes/font_size = 30
+Button/fonts/font = ExtResource("1_5xvpe")
+Label/font_sizes/font_size = 30
+Label/fonts/font = ExtResource("1_5xvpe")
+LineEdit/colors/font_color = Color(1, 1, 1, 1)
+LineEdit/colors/font_placeholder_color = Color(1, 1, 1, 0.6862745)
+LineEdit/font_sizes/font_size = 40
+LineEdit/fonts/font = ExtResource("1_5xvpe")
