@@ -1,13 +1,33 @@
-[gd_resource type="Theme" load_steps=2 format=3 uid="uid://jo6gso32sfyr"]
+[gd_resource type="Theme" load_steps=5 format=3 uid="uid://jo6gso32sfyr"]
 
 [ext_resource type="FontFile" uid="uid://c0urbn30seb7n" path="res://Assets/Fonts/Gamefont.ttf" id="1_5xvpe"]
+
+[sub_resource type="DPITexture" id="DPITexture_5xvpe"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"4\" height=\"8\"><path fill=\"#fff\" fill-opacity=\".25\" d=\"M1 0h2v16H1z\"/></svg>
+"
+base_scale = 2.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yb3kb"]
+bg_color = Color(1, 1, 1, 0.5882353)
+expand_margin_top = 6.0
+expand_margin_bottom = 6.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5r367"]
+bg_color = Color(0, 0, 0, 0.588)
 
 [resource]
 Button/font_sizes/font_size = 30
 Button/fonts/font = ExtResource("1_5xvpe")
+HSlider/icons/grabber = SubResource("DPITexture_5xvpe")
+HSlider/icons/grabber_disabled = SubResource("DPITexture_5xvpe")
+HSlider/icons/grabber_highlight = SubResource("DPITexture_5xvpe")
+HSlider/styles/grabber_area = SubResource("StyleBoxFlat_yb3kb")
+HSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_yb3kb")
+HSlider/styles/slider = SubResource("StyleBoxFlat_yb3kb")
 Label/font_sizes/font_size = 30
 Label/fonts/font = ExtResource("1_5xvpe")
 LineEdit/colors/font_color = Color(1, 1, 1, 1)
 LineEdit/colors/font_placeholder_color = Color(1, 1, 1, 0.6862745)
 LineEdit/font_sizes/font_size = 40
 LineEdit/fonts/font = ExtResource("1_5xvpe")
+Panel/styles/panel = SubResource("StyleBoxFlat_5r367")

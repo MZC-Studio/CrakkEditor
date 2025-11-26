@@ -1,9 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://cohc83cl8wnij"]
+[gd_scene load_steps=6 format=3 uid="uid://cohc83cl8wnij"]
 
 [ext_resource type="Script" uid="uid://dmx7bdk70hv4e" path="res://Scripts/EditorMain.cs" id="1_idj7w"]
 [ext_resource type="Theme" uid="uid://jo6gso32sfyr" path="res://Assets/Themes/theme.tres" id="1_r150o"]
+[ext_resource type="PackedScene" uid="uid://ryh6xumruox7" path="res://Assets/PackedScenes/Line.tscn" id="2_kln2b"]
+[ext_resource type="Texture2D" uid="uid://bw8mqs2rrg2yg" path="res://Assets/BG.png" id="3_rgh2o"]
 
-[node name="FPS" type="Control" node_paths=PackedStringArray("bpmEdit", "beatNumEdit", "trackEdit", "holdTimeEdit", "noteBPMEdit", "xPosEdit", "yPosEdit", "playButton", "pauseButton", "saveButton", "loadChartButton", "loadMusicButton", "previewButton", "reloadButton", "switchButtons", "nameLabel", "timeLabel", "currentTypeLabel", "FPSLabel", "timeSlider", "tipMask", "player")]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kln2b"]
+bg_color = Color(0.18431373, 0.18431373, 0.18431373, 0.98039216)
+
+[node name="FPS" type="Control" node_paths=PackedStringArray("bpmEdit", "beatNumEdit", "trackEdit", "holdTimeEdit", "noteBPMEdit", "xPosEdit", "yPosEdit", "playButton", "pauseButton", "saveButton", "loadChartButton", "loadMusicButton", "previewButton", "reloadButton", "switchButtons", "nameLabel", "timeLabel", "currentTypeLabel", "FPSLabel", "timeSlider", "tipMask", "camEventsParent", "lineParent", "judgeLine", "fileDialog", "player")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -32,14 +37,203 @@ currentTypeLabel = NodePath("DataPanel/NoteControl/CurrentSelect")
 FPSLabel = NodePath("DataPanel/ControlArea/Container/FPS")
 timeSlider = NodePath("DataPanel/SongsControl/TimeSlider")
 tipMask = NodePath("DataPanel/Mask")
+camEventsParent = NodePath("EventPanel/CEParent")
+lineParent = NodePath("NotePanel/NoteParent")
+judgeLine = NodePath("NotePanel/NoteParent/Line")
+beatLine = ExtResource("2_kln2b")
+fileDialog = NodePath("FileDialog")
 player = NodePath("AudioStreamPlayer")
+
+[node name="AspectRatioContainer" type="AspectRatioContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+ratio = 1.7778
+
+[node name="TextureRect" type="TextureRect" parent="AspectRatioContainer"]
+self_modulate = Color(0.34870988, 0.34870988, 0.34870988, 1)
+layout_mode = 2
+texture = ExtResource("3_rgh2o")
+
+[node name="EventPanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 131.0
+offset_top = -466.0
+offset_right = 1037.0
+offset_bottom = 726.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_r150o")
+
+[node name="Panel" type="Panel" parent="EventPanel"]
+z_index = 1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Title" type="Label" parent="EventPanel"]
+z_index = 1
+layout_mode = 1
+offset_left = 27.0
+offset_top = 9.0
+offset_right = 866.0
+offset_bottom = 81.0
+theme = ExtResource("1_r150o")
+theme_override_font_sizes/font_size = 45
+text = "事件编辑"
+vertical_alignment = 1
+
+[node name="CEParent" type="Control" parent="EventPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CameraMoveEvent" type="ColorRect" parent="EventPanel/CEParent"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -364.0
+offset_top = -325.0
+offset_right = -231.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.6745098, 0.9490196, 1, 0.78431374)
+
+[node name="CameraRotateEvent" type="ColorRect" parent="EventPanel/CEParent"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -167.0
+offset_top = -326.0
+offset_right = -34.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(1, 0.9019608, 0.627451, 0.78431374)
+
+[node name="CameraBrightnessEvent" type="ColorRect" parent="EventPanel/CEParent"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 33.0
+offset_top = -325.0
+offset_right = 166.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(1, 0.7137255, 0.5372549, 0.78431374)
+
+[node name="BPMEvent" type="ColorRect" parent="EventPanel/CEParent"]
+z_index = 2
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 237.0
+offset_top = -325.0
+offset_right = 370.0
+grow_horizontal = 2
+grow_vertical = 0
+color = Color(0.7780926, 1, 0.93426174, 0.78431374)
+
+[node name="NotePanel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1166.0
+offset_top = -466.0
+offset_right = 131.0
+offset_bottom = 726.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_r150o")
+
+[node name="NoteParent" type="Control" parent="NotePanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Line" type="ColorRect" parent="NotePanel/NoteParent"]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 1054.0
+offset_right = 2201.0
+offset_bottom = 1066.0
+
+[node name="Line2" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1165.0
+offset_top = 587.0
+offset_right = 1035.0
+offset_bottom = 599.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BottomBar2" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -1165.0
+offset_top = 601.0
+offset_right = 1036.0
+offset_bottom = 725.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.1254902, 0.1254902, 0.1254902, 1)
 
 [node name="DataPanel" type="Panel" parent="."]
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
-offset_bottom = 256.0
+offset_left = -9.0
+offset_top = -5.0
+offset_right = -9.0
+offset_bottom = 251.0
 grow_horizontal = 2
+theme = ExtResource("1_r150o")
+theme_override_styles/panel = SubResource("StyleBoxFlat_kln2b")
 
 [node name="BasicData" type="MarginContainer" parent="DataPanel"]
 layout_mode = 1
@@ -161,7 +355,7 @@ offset_right = 514.0
 offset_bottom = 83.0
 theme = ExtResource("1_r150o")
 theme_override_font_sizes/font_size = 40
-text = "SongfileName"
+text = "未加载"
 
 [node name="Time" type="Label" parent="DataPanel/SongsControl"]
 layout_mode = 0
@@ -171,7 +365,7 @@ offset_right = 514.0
 offset_bottom = 146.0
 theme = ExtResource("1_r150o")
 theme_override_font_sizes/font_size = 30
-text = "0:00/2:00"
+text = "0:00/-:--"
 
 [node name="Play" type="Button" parent="DataPanel/SongsControl"]
 layout_mode = 0
@@ -528,83 +722,11 @@ text = "！请先加载音频文件 ！"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
-[node name="NotePanel" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -1166.0
-offset_top = -466.0
-offset_right = 131.0
-offset_bottom = 726.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="CameraEventPanel" type="Panel" parent="."]
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = 264.0
-offset_top = -466.0
-offset_right = 1170.0
-offset_bottom = 726.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Title" type="Label" parent="CameraEventPanel"]
-layout_mode = 1
-offset_left = 27.0
-offset_top = 9.0
-offset_right = 866.0
-offset_bottom = 81.0
-theme = ExtResource("1_r150o")
-theme_override_font_sizes/font_size = 45
-text = "摄像机事件编辑"
-vertical_alignment = 1
-
-[node name="CameraMoveEvent" type="ColorRect" parent="CameraEventPanel"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -372.0
-offset_top = -325.0
-offset_right = -239.0
-grow_horizontal = 2
-grow_vertical = 0
-color = Color(0.6745098, 0.9490196, 1, 0.78431374)
-
-[node name="CameraRotateEvent" type="ColorRect" parent="CameraEventPanel"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -66.5
-offset_top = -325.0
-offset_right = 66.5
-grow_horizontal = 2
-grow_vertical = 0
-color = Color(1, 0.9019608, 0.627451, 0.78431374)
-
-[node name="CameraBrightnessEvent" type="ColorRect" parent="CameraEventPanel"]
-layout_mode = 1
-anchors_preset = 7
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = 237.0
-offset_top = -325.0
-offset_right = 370.0
-grow_horizontal = 2
-grow_vertical = 0
-color = Color(1, 0.7137255, 0.5372549, 0.78431374)
+[node name="FileDialog" type="FileDialog" parent="."]
+oversampling_override = 1.0
+title = "Open a File"
+ok_button_text = "打开"
+cancel_button_text = "取消"
+file_mode = 0
+access = 2
+use_native_dialog = true

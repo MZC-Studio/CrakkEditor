@@ -16,8 +16,13 @@ public partial class EditorMain : Control
 	[Export] public HSlider timeSlider;
 	[Export] public ColorRect tipMask;
 
-	[Export] public AudioStreamPlayer player;
+	[Export] public Control camEventsParent, lineParent, judgeLine;
+	[Export] public PackedScene beatLine, note;
+	
+	[Export] public FileDialog fileDialog;
 
+	[Export] public AudioStreamPlayer player;
+	
 	private float bpm;
 	private int beatNum;
 
@@ -28,7 +33,12 @@ public partial class EditorMain : Control
 	private List<string> noteTypeList = new List<string>();
 
 	private float songTime;
+	private float parentStartPos, topPos;
 	
+	private float distanceOfBeats;
+	private float scrollSpeedPerMin;
+	private float speed = 600f;
+
 	public override void _Ready()
 	{
 		tipMask.Show();
@@ -46,6 +56,9 @@ public partial class EditorMain : Control
 			noteTypeList.Add(button.Text);
 			button.Pressed += () => LoadType(index1);
 		}
+
+		parentStartPos = lineParent.Position.Y;
+		
 		trackEdit.Show();
 		noteBPMEdit.Show();
 			
@@ -77,6 +90,9 @@ public partial class EditorMain : Control
 					timeLabel.Text = SecondsToMMSS((int)player.GetPlaybackPosition()) 
 					                 + "/" + SecondsToMMSS((int)player.GetStream().GetLength());
 					timeSlider.Value = player.GetPlaybackPosition();
+
+					lineParent.Position = lineParent.Position with { Y = parentStartPos + distanceOfBeats * bpm / 60 * player.GetPlaybackPosition() };
+					camEventsParent.Position = camEventsParent.Position with { Y = parentStartPos + distanceOfBeats * bpm / 60 * player.GetPlaybackPosition() };
 				}
 				else
 				{
@@ -93,7 +109,42 @@ public partial class EditorMain : Control
 			}
 		}
 	}
-	
+
+	public override void _Input(InputEvent @event)
+	{
+		if (@event is InputEventMouseButton eventKey)
+		{
+			if (eventKey.ButtonIndex == MouseButton.WheelUp)
+			{
+				if (lineParent.Position.Y - parentStartPos >= speed / 3)
+				{
+					if (player.IsPlaying())
+					{
+						player.Stop();
+					}
+					lineParent.Position += Vector2.Up * speed / 3; 
+					camEventsParent.Position += Vector2.Up * speed / 3;
+					songTime = (lineParent.Position.Y - parentStartPos) / distanceOfBeats / bpm * 60;
+				}
+				else
+				{
+					lineParent.Position = lineParent.Position with { Y = parentStartPos };
+					camEventsParent.Position = camEventsParent.Position with { Y = parentStartPos };
+				}
+			}
+			else if (eventKey.ButtonIndex == MouseButton.WheelDown)
+			{
+				if(player.IsPlaying())
+				{					
+					player.Stop();
+				}
+				lineParent.Position += Vector2.Down * speed / 3; 
+				camEventsParent.Position += Vector2.Down * speed / 3;
+				songTime = (lineParent.Position.Y - parentStartPos) / distanceOfBeats / bpm * 60;
+			}
+		}
+	}
+
 	private void LoadType(int index)
 	{
 		currentPlaceNoteIndex = index;
@@ -129,8 +180,13 @@ public partial class EditorMain : Control
 
 	private void OnDataChanged()
 	{
+		player.Stop();
+		songTime = 0;
+		
 		bpm = Convert.ToSingle(bpmEdit.Text);
 		beatNum = Convert.ToInt32(beatNumEdit.Text);
+		
+		GenBeatLine();
 	}
 
 	private void ChangePlayState(bool isPlay)
@@ -148,16 +204,15 @@ public partial class EditorMain : Control
 			player.Stop();
 		}
 	}
-
+	
 	private void SelectMusic()
 	{
-		var fileDialog = new FileDialog();
 		fileDialog.FileMode = FileDialog.FileModeEnum.OpenFile;
 		fileDialog.Access = FileDialog.AccessEnum.Filesystem;
 		fileDialog.AddFilter("*.wav;音频文件");
-		AddChild(fileDialog);
 		fileDialog.FileSelected += OnMusicSelected;
-		fileDialog.PopupCentered(new Vector2I(1920, 1080));
+		fileDialog.PopupCentered();
+
 		void OnMusicSelected(string path)
 		{
 			var audio = AudioStreamWav.LoadFromFile(path);
@@ -165,6 +220,53 @@ public partial class EditorMain : Control
 			nameLabel.Text = path.GetFile();
 			timeSlider.MaxValue = audio.GetLength();
 			tipMask.Hide();
+			GenBeatLine();
+		}
+	}
+
+	private void GenBeatLine()
+	{
+		lineParent.Position = lineParent.Position with { Y = parentStartPos };
+		camEventsParent.Position = camEventsParent.Position with { Y = parentStartPos };
+		
+		foreach (var child in lineParent.GetChildren())
+		{
+			if(child.Name != judgeLine.Name) child.QueueFree();
+		}
+		
+		float beatsCount = (float)(player.GetStream().GetLength() / 60f * bpm);
+		distanceOfBeats = (float)(player.GetStream().GetLength() * speed / beatsCount);
+		scrollSpeedPerMin = distanceOfBeats * bpm;
+		
+		float lineNum = beatsCount + 2 + beatsCount * (beatNum - 1);
+		float bottomPos = judgeLine.Position.Y;
+		int i = 0;
+		int number = 0;
+		while (i < (int)lineNum)
+		{
+			Control line = (Control)beatLine.Instantiate();
+			lineParent.AddChild(line);
+			line.Position = new Vector2(judgeLine.Position.X, bottomPos - i * distanceOfBeats / beatNum);
+			
+			if (i % beatNum == 0)
+			{
+				((BeatLine)line).lineNumber = number;
+				number++;
+			}
+			else
+			{
+				((BeatLine)line).lineNumber = -2;
+				line.SelfModulate = new Color(0.5f, 0.5f, 0.5f);
+			}
+
+			((BeatLine)line).controller = this;
+			((BeatLine)line).index = i;
+			((BeatLine)line).Init();
+			if (i + 1 == (int)lineNum)
+			{
+				topPos = line.Position.Y;
+			}
+			i++;
 		}
 	}
 
